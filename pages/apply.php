@@ -1,7 +1,8 @@
 <section class="container auth-wrap">
     <div class="form-card wide">
         <h1>Новая заявка</h1>
-        <form method="post" action="/apply" data-validate="apply" novalidate>
+        <form action="action.php" method="POST">
+             <input type="hidden" name="act" value="apply">
             <div class="mb-3">
                 <label class="form-label" for="circle">Кружок</label>
                 <select class="form-select" id="circle" name="circle" required>

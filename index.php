@@ -24,7 +24,11 @@ include 'db.php';
             </button>
             <div class="collapse navbar-collapse" id="nav">
                 <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
+                   
+                    <li class="nav-item"><a class="nav-link" href="/"><?php echo htmlspecialchars( $_SESSION['username']); ?></a></li>
                     <li class="nav-item"><a class="nav-link" href="/">Главная</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/">Главная</a></li>
+                    
 
                 </ul>
 
@@ -57,7 +61,8 @@ include 'db.php';
         }
         if ($path === '/logout') {
             session_destroy();
-            redirect('/login');
+            header("Location: /login");
+            return;
         }
         include '<pages>/main.php';
         ?>
