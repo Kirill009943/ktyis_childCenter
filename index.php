@@ -1,5 +1,6 @@
 <?php
 include 'db.php';
+ob_start();
 ?>
 
 <!DOCTYPE html>
@@ -25,10 +26,14 @@ include 'db.php';
             <div class="collapse navbar-collapse" id="nav">
                 <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
                    
-                    <li class="nav-item"><a class="nav-link" href="/"><?php echo htmlspecialchars( $_SESSION['username']); ?></a></li>
+                    <li class="nav-item"><a class="nav-link" href="/"><?php echo htmlspecialchars( $_SESSION['username'] ?? 'Гость'); ?></a></li>
                     <li class="nav-item"><a class="nav-link" href="/">Главная</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/">Главная</a></li>
-                    
+                    <li class="nav-item"><a class="nav-link" href="/apply">Подать заявку</a></li>
+                    <?php if (!isset($_SESSION['username'])): ?>
+                    <li class="nav-item"><a class="nav-link" href="/login">Войти</a></li>
+                    <?php else: ?>
+                    <li class="nav-item"><a class="nav-link" href="/logout">Выйти</a></li>
+                    <?php endif; ?>
 
                 </ul>
 
@@ -41,6 +46,7 @@ include 'db.php';
     <main class="page-shell fade-in">
 
         <?php
+        
         $path = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
 
         if ($path === '/') {
@@ -56,12 +62,15 @@ include 'db.php';
             return;
         }
         if ($path === '/apply') {
+            if (!isset($_SESSION['username'])) {
+                header("Location: /login");
+                return;
+            }
             include '<pages>/apply.php';
             return;
         }
         if ($path === '/logout') {
             session_destroy();
-            header("Location: /login");
             return;
         }
         include '<pages>/main.php';
