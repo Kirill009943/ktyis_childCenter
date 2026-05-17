@@ -40,6 +40,7 @@ if ($action == 'login') {
         if (password_verify($password, $user['password_hash'])) {
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['username'] = $user['login'];
+            $_SESSION['role'] = $user['role'];
             //echo "Вход выполнен, привет " . $user['login'];
             header("Location: index.php");
         } else {

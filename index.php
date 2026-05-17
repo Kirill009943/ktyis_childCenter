@@ -1,6 +1,15 @@
 <?php
 include 'db.php';
 ob_start();
+
+if (isset($_SESSION['user_id']) && !isset($_SESSION['role'])) {
+    $user_id = $_SESSION['user_id'];
+    $role_result = mysqli_query($conn, "SELECT role FROM users WHERE id='$user_id'");
+    if ($role_result && mysqli_num_rows($role_result) == 1) {
+        $role_user = mysqli_fetch_assoc($role_result);
+        $_SESSION['role'] = $role_user['role'];
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -29,6 +38,9 @@ ob_start();
                     <li class="nav-item"><a class="nav-link" href="/"><?php echo htmlspecialchars( $_SESSION['username'] ?? 'Гость'); ?></a></li>
                     <li class="nav-item"><a class="nav-link" href="/">Главная</a></li>
                     <li class="nav-item"><a class="nav-link" href="/apply">Подать заявку</a></li>
+                    <?php if (isset($_SESSION['role']) && $_SESSION['role'] == 'admin'): ?>
+                    <li class="nav-item"><a class="nav-link" href="/admin">Админ панель</a></li>
+                    <?php endif; ?>
                     <?php if (!isset($_SESSION['username'])): ?>
                     <li class="nav-item"><a class="nav-link" href="/login">Войти</a></li>
                     <?php else: ?>
@@ -69,8 +81,17 @@ ob_start();
             include '<pages>/apply.php';
             return;
         }
+        if ($path === '/admin') {
+            if (!isset($_SESSION['role']) || $_SESSION['role'] != 'admin') {
+                header("Location: /login");
+                return;
+            }
+            include '<pages>/admin.php';
+            return;
+        }
         if ($path === '/logout') {
             session_destroy();
+            header("Location: /");
             return;
         }
         include '<pages>/main.php';

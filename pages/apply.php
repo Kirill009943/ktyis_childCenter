@@ -7,9 +7,10 @@
                 <label class="form-label" for="circle">Кружок</label>
                 <select class="form-select" id="circle" name="circle" required>
                     <option value="">Выберите</option>
-                    <option value="Музыка">Музыка</option>
-                    <option value="Изобразительное искусство">Изобразительное искусство</option>
-                    <option value="Танцы">Танцы</option>
+                    <option value="Робототехника">Робототехника</option>
+                    <option value="Рисование">Рисование</option>
+                    <option value="Английский для детей">Английский для детей</option>
+                    <option value="Шахматы">Шахматы</option>
                 </select>
             </div>
             <div class="mb-3">
